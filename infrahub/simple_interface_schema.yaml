@@ -98,6 +98,7 @@ nodes:
             color: "#bfbfbf"
     relationships:
       - name: interfaces
+        identifier: "device__interface"
         cardinality: many
         peer: NetworkInterface
         kind: Component
