@@ -3,7 +3,6 @@
 	"image": "mcr.microsoft.com/vscode/devcontainers/universal:linux",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
-
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
@@ -19,5 +18,12 @@
 		"INFRAHUB_API_TOKEN": "44af444d-3b26-410d-9546-b758657e026c"
 	},
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install -r requirements.txt && infrahubctl --install-completion"
+	"postCreateCommand": "pip3 install -r requirements.txt",
+	"forwardPorts": [
+		8000
+	],
+	"hostRequirements": {
+		"cpus": 4,
+		"memory": "16gb"
+	}
 }
