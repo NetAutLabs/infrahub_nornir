@@ -52,7 +52,6 @@ nodes:
         kind: Parent
       - name: ip_address
         peer: IpamIPAddress
-        identifier: "interface__address"
         cardinality: one
         optional: true
         kind: Attribute
@@ -148,71 +147,17 @@ nodes:
         cardinality: one
         peer: NetworkL2Domain
         kind: Attribute
+  - name: IPPrefix
+    namespace: Ipam
+    include_in_menu: false
+    inherit_from:
+      - "BuiltinIPPrefix"
+    description: "IPv4 or IPv6 network"
+    label: "IP Prefix"
   - name: IPAddress
     namespace: Ipam
+    include_in_menu: false
+    inherit_from:
+      - "BuiltinIPAddress"
     description: "IP Address"
     label: "IP Address"
-    icon: "mdi:ip-outline"
-    default_filter: address__value
-    order_by:
-      - "address__value"
-    display_labels:
-      - address__value
-    uniqueness_constraints:
-      - ["prefix", "address__value"]
-    attributes:
-      - name: address
-        kind: IPHost
-      - name: description
-        kind: Text
-        optional: true
-    relationships:
-      - name: interface
-        peer: NetworkInterface
-        kind: Attribute
-        optional: true
-        cardinality: one
-      - name: prefix
-        peer: IpamPrefix
-        identifier: "prefix__address"
-        kind: Parent
-        optional: false
-        cardinality: one
-  - name: Prefix
-    namespace: Ipam
-    description: "IPv4 or IPv6 network (with mask)"
-    icon: "mdi:ip-network"
-    label: "Prefix"
-    default_filter: prefix__value
-    order_by:
-      - prefix__value
-    display_labels:
-      - prefix__value
-    attributes:
-      - name: prefix
-        kind: IPNetwork
-      - name: description
-        kind: Text
-        optional: true
-      - name: status
-        kind: Dropdown
-        choices:
-          - name: active
-            label: Active
-            description: "Prefix is active"
-            color: "#7fbf7f"
-          - name: deprecated
-            label: Deprecated
-            description: "Prefix should not be used"
-            color: "#ffd27f"
-    relationships:
-      - name: vlan
-        peer: NetworkL2Domain
-        optional: true
-        cardinality: one
-        kind: Attribute
-      - name: ip_addresses
-        peer: IpamIPAddress
-        identifier: "prefix__address"
-        cardinality: many
-        kind: Component

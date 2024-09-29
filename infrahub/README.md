@@ -7,7 +7,7 @@ Check out [Infrahub Documentation](https://docs.infrahub.app/guides/installation
 The docker compose is downloaded from:
 
 ```bash
-curl https://infrahub.opsmill.io/0.16.0 --output docker-compose.yaml
+curl https://infrahub.opsmill.io/0.16.1 --output docker-compose.yaml
 ```
 
 
