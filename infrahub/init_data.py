@@ -17,21 +17,21 @@ mutation {
 """
 
 create_resource_manager = """
-mutation {{
-  CoreIPAddressPoolCreate(data: {{
-    name: {{value: "My IP address pool"}},
-    default_address_type: {{value: "IpamIPAddress"}},
-    default_prefix_length: {{value: 32}},
-    resources: [{{id: "{prefix_id}"}}],
-    ip_namespace: {{id: "default"}}
-  }})
-  {{
+mutation {
+  CoreIPAddressPoolCreate(data: {
+    name: {value: "My IP address pool"},
+    default_address_type: {value: "IpamIPAddress"},
+    default_prefix_length: {value: 32},
+    resources: [{id: "%s"}],
+    ip_namespace: {id: "default"}
+  })
+  {
     ok
-    object {{
+    object {
       id
-    }}
-  }}
-}}
+    }
+  }
+}
 """
 
 
@@ -82,7 +82,7 @@ mutation {
     name: {value: "dev-123"},
     primary_ip: {
       from_pool: {
-        id: "<id of resource pool>"
+        id: "%s"
       }
     }
   }) {
@@ -104,13 +104,17 @@ mutation {
 def main():
     # Needs environment variable `INFRAHUB_API_TOKEN`
     client = InfrahubClientSync(address="http://localhost:8000")
+    
+    # Create prefix
     result = client.execute_graphql(create_prefix)
     prefix_id = result["IpamIPPrefixCreate"]["object"]["id"]
     print(prefix_id)
-    print(create_resource_manager.format(prefix_id=prefix_id))
-
-    result = client.execute_graphql(create_resource_manager.format(prefix_id=prefix_id))
+    
+    
+    # Create resource pool for IPs
+    result = client.execute_graphql(create_resource_manager % prefix_id)
     print(result)
 
+    print(use_pool_in_node % "TESTTESTETEST")
 if __name__ == "__main__":
     main()
