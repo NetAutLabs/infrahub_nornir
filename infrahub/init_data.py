@@ -98,24 +98,21 @@ mutation MyMutation2 {
 """,
 ]
 
-get_devices = """
-query MyQuery {
-  NetworkDevice {
-    edges {
-      node {
-        hfid
-        name {
-          value
-        }
-        description {
-          value
-        }
-      }
-    }
+create_interface = """
+mutation MyMutation {
+  NetworkInterfaceUpsert(data: {
+    name: {value: "%s"}, 
+    mode: {value: "routed"}, 
+    device: {hfid: "%s"}, 
+    ip_address: 
+      {from_pool: {id: "%s"}}
+  }
+  ){
+    ok
   }
 }
-"""
 
+"""
 
 def main():
     # Needs environment variable `INFRAHUB_API_TOKEN`
@@ -139,6 +136,10 @@ def main():
     for device_mutation in create_devices:
       result = client.execute_graphql(device_mutation)
       print(result)
+    
+    for device in ["switch01", "switch02"]:
+       result = client.execute_graphql(create_interface % ("Ethernet1", device, pool_id))
+       print(result)
 
 
 if __name__ == "__main__":
